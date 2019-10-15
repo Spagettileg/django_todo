@@ -33,8 +33,7 @@ SECRET_KEY = '$0omod8*6-7i)c-9$j%)mig8+ta!0rkfx+f%zw!gbg_4v0z&)&'
 # Links to row 16 if statement
 DEBUG = development
 
-ALLOWED_HOSTS = [os.environ.get('C9_HOSTNAME'),
-                 os.environ.get('AWSC9_HOST'),
+ALLOWED_HOSTS = [os.getenv('AWSC9_HOST'),
                  os.environ.get('HOSTNAME')]
 
 
