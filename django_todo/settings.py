@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 
+if os.path.exists('env.py'):
+    import env
+
 if os.environ.get('DEVELOPMENT'):
     development = True
 else:
@@ -31,7 +34,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Links to row 16 if statement
-DEBUG = development
+DEBUG = False
 
 ALLOWED_HOSTS = [os.getenv('AWSC9_HOST'),
                  os.environ.get('HOSTNAME')]
@@ -83,15 +86,18 @@ WSGI_APPLICATION = 'django_todo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-if development:  # If development = true, then sqlite3 database is used 
+if "DATABASE_URL" in os.environ:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-else:  # if development = false (production), then DATABASE_URL is used
-    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+else:
+    print("Postgres URL not found, using sqlite instead.")
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
