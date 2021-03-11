@@ -2,3 +2,4 @@
 .coverage
 env.py
 django_todo/__pycache__/__init__.cpython-36.pyc
+__pycache__/
